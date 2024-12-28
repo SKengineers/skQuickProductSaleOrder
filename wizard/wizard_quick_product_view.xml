@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="wizard_action_quick_product" model="ir.actions.act_window">
+            <field name="name">Action Quick Product</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">wizard.quick.product</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+    <record id="wizard_quick_product_form_view" model="ir.ui.view">
+            <field name="name">wizard_quick_product_form_view</field>
+            <field name="model">wizard.quick.product</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="select_type" required="1"/>
+                        </group>
+                        <group>
+                        </group>
+                        <notebook>
+                            <page string="Product Import">
+                                <group>
+                                    <field name="product_ids" widget="many2many_tags" invisible="select_type != 'quick'" required="select_type == 'quick'" domain="[('sale_ok', '=', True)]"/>
+                                    <field name="file_import" filename="file_name"  widget="binary" invisible="select_type != 'file'" required="select_type == 'file'"/>
+                                    <field name="file_name" invisible="1"/>
+                                    <field name="text_import" invisible="select_type != 'text'" required="select_type == 'text'" placeholder="Type default code/quantity and break line for each product... Please use Enter for input each line"/>
+                                </group>
+                                <field name="product_line_ids" invisible="select_type != 'flexible'" required="select_type == 'flexible'">
+                                    <tree editable="top">
+                                        <field name="product_id" required="1"/>
+                                        <field name="quantity"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <footer>
+                        <button
+                                name="action_import"
+                                string="Import"
+                                type="object"
+                                class="btn-primary"
+                                confirm="Do you want to import these Product?"
+                        />
+                        <button string="Close" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+</odoo>
